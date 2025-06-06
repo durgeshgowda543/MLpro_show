@@ -1,0 +1,22 @@
+import numpy as np
+from collections import Counter
+np.random.seed(42)
+data = np.random.rand(100)
+train_x = data[:50]
+test_x = data[50:]
+train_y = ['Class1' if x <= 0.5 else 'Class2' for x in train_x]
+def knn_predict(train_x, train_y, test_val, k):
+	distances = np.abs(train_x - test_val)
+	sorted_idx = np.argsort(distances)
+	nearest_labels = np.array(train_y)[sorted_idx][:k]
+ 	return Counter(nearest_labels).most_common(1)[0][0]
+k_values = [1, 2, 3, 4, 5, 20, 30]
+for k in k_values:
+ 	print(f"--- For k = {k} ---")
+ 	predictions = []
+ 	for i, x in enumerate(test_x, start=51):
+ 		pred = knn_predict(train_x, train_y, x, k)
+		predictions.append(pred)
+		print(f"Point x{i}: {x:.4f} -> Predicted: {pred}")
+ 	counts = Counter(predictions)
+	print(f"Summary for k = {k}: Class1 = {counts['Class1']}, Class2 = {counts['Class2']}\n")
