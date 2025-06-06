@@ -1,0 +1,25 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import fetch_california_housing
+california = fetch_california_housing()
+data = pd.DataFrame(california.data, columns=california.feature_names)
+data["MedHouseValue"] = california.target # Add house price column
+print("Dataset Information:\n")
+print(data.info())
+print("\nFirst 10 Rows of the Dataset:\n")
+print(data.head(10))
+plt.figure(figsize=(12, 8))
+data.hist(bins=30, figsize=(12, 8), edgecolor='black', color='skyblue')
+plt.suptitle("Histograms of All Numerical Features", fontsize=16)
+plt.show()
+plt.figure(figsize=(12, 8))
+for i, col in enumerate(data.columns):
+	plt.subplot(3, 3, i+1)
+	sns.boxplot(y=data[col], color='lightcoral')
+ 	plt.title(col)
+ 	plt.ylabel('')
+ 	plt.tight_layout()
+plt.suptitle("Box Plots of All Numerical Features", fontsize=16)
+plt.show()
